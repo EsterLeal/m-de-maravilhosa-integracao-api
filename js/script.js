@@ -4,6 +4,10 @@ fetch('https://theblackwomanhistory.firebaseio.com/.json')
 .then((response) => {
     return response.json();
 })
+
+if (request.status>=200 && request.status<400){
+    console.log('Sucesso')
+    
 .then((info) =>{
     console.log("SUCESSO!!");
     console.log(info);
