@@ -35,26 +35,26 @@ fetch('http://localhost:5001/maravilhosas')
 
         let botao = document.createElement("button");
         botao.innerHTML = "✖";
-        botao.setAttribute("type" , "button");
+        // botao.setAttribute("type" , "button");
         botao.setAttribute('data-id', pessoa.id);
         card.appendChild(botao);
 
-        botao.addEventListener('Click' , (evento) => {
+        botao.addEventListener('Click' , () => {
             console.log(botao);
 
             let thisCard = botao.parentElement;
             let cardPai = thisCard.parentElement;
 
-            fetch('http://localhost:5001/maravilhosas' , {
+            fetch('http://localhost:5001/maravilhosas' + pessoa.id, {
                 method: 'DELETE',
                 headers: {
                     "Accept" : "application/json",
-                    "Content-type" : "application/json",
+                    "Content-type" : "application/json"
                 },
 
-                body: JSON.stringify ({
-                    'id' : botao.getAttribute('data-id')
-                }) 
+                // body: JSON.stringify ({
+                //     'id' : botao.getAttribute('data-id')
+                // }) 
             })
             .then(() => {
                 cardPai.removeChild(thisCard);
