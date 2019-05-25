@@ -1,6 +1,6 @@
 const container = document.querySelector(".maravilhosas__box")
 
-fetch('http:localhost:5001/maravilhosas')
+fetch('http://localhost:5001/maravilhosas')
 .then((response) => {
     return response.json();
 })  
@@ -32,6 +32,39 @@ fetch('http:localhost:5001/maravilhosas')
         let nome = document.createElement('p');
         nome.innerHTML = pessoa.title;
         card.appendChild(nome);
+
+        let botao = document.createElement("button");
+        botao.innerHTML = "✖";
+        botao.setAttribute("type" , "button");
+        botao.setAttribute('data-id', pessoa.id);
+        card.appendChild(botao);
+
+        botao.addEventListener('Click' , (evento) => {
+            console.log(botao);
+
+            let thisCard = botao.parentElement;
+            let cardPai = thisCard.parentElement;
+
+            fetch('http://localhost:5001/maravilhosas' , {
+                method: 'DELETE',
+                headers: {
+                    "Accept" : "application/json",
+                    "Content-type" : "application/json",
+                },
+
+                body: JSON.stringify ({
+                    'id' : botao.getAttribute('data-id')
+                }) 
+            })
+            .then(() => {
+                cardPai.removeChild(thisCard);
+            })
+            .catch((erro => {
+                console.log(erro)
+            }))
+
+
+        })
         
     })
 })
@@ -39,43 +72,31 @@ fetch('http:localhost:5001/maravilhosas')
     console.log(erro);
 })
 
-const bota1 = document.getElementById("botao");
-console.log(bota1);
+const botao = document.getElementById("button");
+console.log(botao);
 
-bota1.addEventListener('click', (evento) =>{
+botao.addEventListener('click', (evento) => {
     console.log("EAEEEEEEE");
-    evento.preventDefault();
 
-    let nome = document.querySelector("#name");
+    let nome = document.querySelector("#titulo");
     let endereco = document.querySelector("#imagem");
         
-    fetch('https:localhost:5001/maravilhosas', {
+    fetch('http://localhost:5001/maravilhosas', {
         
-        Method:'POST',
-        Headers: {
+        method:'POST',
+        headers: {
             "Accept" : "application/json",
             "Content-Type" : "application/json",
         },
         
         body: JSON.stringify ({
-            "title" : nome ,
+            "title" : nome.value ,
             "metadata" : {
                 "image" : {
-                    "url" : endereco,
+                    "url" : endereco.value,
                 }
             }
   
         })
-    })
-    .then((response) => {
-        return response.json();
-    })
-    .then((data) => {
-        console.log(data);
-        document.getElementById("mulheres-maravilhosas-cadastro").textContent("Sucesso!!!")
-    })
-    .catch((erro) => {
-        console.log(erro);
-    })
-    
+    })   
 })
